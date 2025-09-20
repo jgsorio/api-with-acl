@@ -41,7 +41,7 @@ class UserRepository
         return $user;
     }
 
-    public function delete(string $id)
+    public function delete(string $id): bool
     {
         return $this->model->where('id', $id)->delete();
     }
