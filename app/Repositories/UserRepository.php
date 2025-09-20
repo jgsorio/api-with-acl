@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Dto\Users\CreateUserDTO;
 use App\Dto\Users\UpdateUserDTO;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -44,5 +45,21 @@ class UserRepository
     public function delete(string $id): bool
     {
         return $this->model->where('id', $id)->delete();
+    }
+
+    public function syncPermissions(array $permissions, User $user): User
+    {
+        $user->permissions()->sync($permissions);
+        return $user;
+    }
+
+    public function getPermissions(User $user): Collection
+    {
+        return $user->permissions;
+    }
+
+    public function hasPermission(User $user, string $permission): ?Permission
+    {
+        return $user->permissions->where('name', $permission)->first();
     }
 }

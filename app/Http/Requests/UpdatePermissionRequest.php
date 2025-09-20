@@ -22,7 +22,7 @@ class UpdatePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string', 'min:3', 'unique:permissions,name,' . $this->id],
+            'name' => ['nullable', 'string', 'min:3', 'unique:permissions,name,' . $this->permission],
             'description' => ['nullable', 'string']
         ];
     }
