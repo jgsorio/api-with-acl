@@ -23,7 +23,7 @@ class Authorization
         $user = auth()->user();
 
         if (!$this->userRepository->hasPermission($user, $routerName)) {
-            return response()->json(['error' => 'you do not have permission to access this'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['error' => 'you do not have permission to access this'], Response::HTTP_FORBIDDEN);
         }
         return $next($request);
     }
