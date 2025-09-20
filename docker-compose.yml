@@ -1,0 +1,43 @@
+services:
+    app:
+        build: .
+        volumes:
+            - .:/var/www
+        container_name: acl-app
+        working_dir: /var/www
+        networks:
+            - acl-network
+
+    nginx:
+        image: nginx:1.19-alpine
+        container_name: acl-nginx
+        volumes:
+            - .:/var/www
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "8000:80"
+        networks:
+            - acl-network
+
+    database:
+        image: mysql:5.7.22
+        container_name: acl-db
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=acl
+            - MYSQL_USER=laravel
+            - MYSQL_PASSWORD=secret
+        ports:
+            - "3306:3306"
+        networks:
+            - acl-network
+        volumes:
+            - ./mysql:/var/lib/mysql
+
+networks:
+    acl-network:
+        driver: bridge
+
+volumes:
+    mysql:
+        driver: local
